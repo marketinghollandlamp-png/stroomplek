@@ -1,172 +1,197 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
-import { ArrowRight, ChevronDown } from "lucide-react"
+import { Reveal } from "@/components/ui/Reveal"
+import { Magnetic } from "@/components/ui/Magnetic"
 
-export default function Hero() {
-  const bgRef = useRef<HTMLDivElement>(null)
-
+function HeroColumns() {
+  const ref = useRef<HTMLDivElement>(null)
   useEffect(() => {
-    const handleScroll = () => {
-      if (bgRef.current) {
-        bgRef.current.style.transform = `translateY(${window.scrollY * 0.4}px)`
-      }
+    const host = ref.current; if (!host) return
+    const cols = host.querySelectorAll<HTMLElement>(".hcol")
+    const onMove = (e: MouseEvent) => {
+      const r = host.getBoundingClientRect()
+      const mx = e.clientX - r.left
+      cols.forEach(c => {
+        const cx = parseFloat(c.dataset.x || "0") / 100 * r.width
+        const dist = Math.abs(mx - cx)
+        const intensity = Math.max(0, 1 - dist / 280)
+        c.style.setProperty("--i", intensity.toFixed(3))
+      })
     }
-    window.addEventListener("scroll", handleScroll, { passive: true })
-    return () => window.removeEventListener("scroll", handleScroll)
+    const onLeave = () => cols.forEach(c => c.style.setProperty("--i", "0"))
+    host.addEventListener("mousemove", onMove)
+    host.addEventListener("mouseleave", onLeave)
+    return () => { host.removeEventListener("mousemove", onMove); host.removeEventListener("mouseleave", onLeave) }
   }, [])
-
+  const positions = [10, 22, 38, 56, 70, 84, 92]
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background */}
-      <div
-        ref={bgRef}
-        className="absolute inset-0 will-change-transform"
-        style={{
-          background: "linear-gradient(135deg, #080808 0%, #0d0d1a 35%, #0a0f1e 60%, #060c18 100%)",
-        }}
-      />
-
-      {/* Grid pattern overlay */}
-      <div
-        className="absolute inset-0 opacity-[0.04]"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(255,255,255,0.8) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.8) 1px, transparent 1px)
-          `,
-          backgroundSize: "60px 60px",
-        }}
-      />
-
-      {/* Blue accent glow */}
-      <div
-        className="absolute top-1/4 right-1/4 w-96 h-96 rounded-full opacity-10 blur-3xl"
-        style={{ background: "radial-gradient(circle, #0055ff 0%, transparent 70%)" }}
-      />
-      <div
-        className="absolute bottom-1/3 left-1/5 w-64 h-64 rounded-full opacity-8 blur-3xl"
-        style={{ background: "radial-gradient(circle, #0033cc 0%, transparent 70%)" }}
-      />
-
-      {/* Decorative column shape (right side) */}
-      <div className="absolute right-16 lg:right-32 top-1/2 -translate-y-1/2 hidden lg:block">
-        <ColumnSilhouette />
-      </div>
-
-      {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 pt-20 pb-16">
-        <div className="max-w-3xl">
-          {/* Eyebrow */}
-          <div className="inline-flex items-center gap-2 bg-white/10 border border-white/15 rounded-full px-4 py-1.5 mb-8 backdrop-blur-sm">
-            <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
-            <span className="text-white/80 text-xs font-medium tracking-wider uppercase">
-              Premium stroomzuilen
-            </span>
-          </div>
-
-          {/* Headline */}
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold text-white leading-[1.0] tracking-tight mb-6">
-            De nieuwe standaard in{" "}
-            <span className="text-transparent bg-clip-text"
-              style={{ backgroundImage: "linear-gradient(135deg, #4d8bff 0%, #0055ff 100%)" }}>
-              stroomvoorziening
-            </span>
-            .
-          </h1>
-
-          {/* Subtext */}
-          <p className="text-lg lg:text-xl text-white/60 leading-relaxed mb-10 max-w-2xl">
-            Volledig configureerbare stroomzuilen voor moderne kantoren en projectinrichting.
-            Ontworpen voor architecten, installateurs en zakelijke eindklanten.
-          </p>
-
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Link
-              href="/configurator"
-              className="group inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-7 py-3.5 rounded-xl text-base transition-all duration-200 hover:shadow-lg hover:shadow-blue-600/25 active:scale-[0.98]"
-            >
-              Stel je zuil samen
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-            </Link>
-            <Link
-              href="/modellen"
-              className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/15 border border-white/15 hover:border-white/25 text-white font-semibold px-7 py-3.5 rounded-xl text-base transition-all duration-200 backdrop-blur-sm"
-            >
-              Bekijk standaard modellen
-            </Link>
-          </div>
-
-          {/* Stats */}
-          <div className="mt-16 pt-10 border-t border-white/10 grid grid-cols-3 gap-8 max-w-lg">
-            {[
-              { value: "5 jaar", label: "garantie" },
-              { value: "NL", label: "ontworpen" },
-              { value: "ISO", label: "gecertificeerd" },
-            ].map((stat) => (
-              <div key={stat.label}>
-                <div className="text-2xl font-bold text-white">{stat.value}</div>
-                <div className="text-xs text-white/40 mt-0.5 uppercase tracking-wider">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-        <ChevronDown className="w-6 h-6 text-white/30" />
-      </div>
-    </section>
+    <div ref={ref} className="hcols">
+      {positions.map((x, i) => (
+        <div key={i} className="hcol" data-x={x} style={{ left: `${x}%` }} />
+      ))}
+    </div>
   )
 }
 
-function ColumnSilhouette() {
+function Arrow({ size = 14 }: { size?: number }) {
   return (
-    <div className="relative opacity-20 select-none pointer-events-none">
-      {/* Main column body */}
-      <div
-        className="relative mx-auto"
-        style={{
-          width: "72px",
-          height: "420px",
-          background: "linear-gradient(180deg, #4a4a5a 0%, #2a2a3a 40%, #1a1a28 100%)",
-          borderRadius: "6px",
-          boxShadow: "inset 2px 0 8px rgba(255,255,255,0.05), inset -2px 0 4px rgba(0,0,0,0.3), 4px 8px 32px rgba(0,0,0,0.4)",
-        }}
-      >
-        {/* Highlight stripe */}
-        <div
-          className="absolute top-0 left-3 bottom-0 w-px opacity-30"
-          style={{ background: "linear-gradient(180deg, transparent, rgba(255,255,255,0.6), transparent)" }}
-        />
-        {/* Connection modules */}
-        {[80, 140, 200, 260, 320].map((top) => (
-          <div
-            key={top}
-            className="absolute left-1/2 -translate-x-1/2 w-12 h-8 rounded-sm"
-            style={{
-              top,
-              background: "rgba(0,0,0,0.4)",
-              border: "1px solid rgba(255,255,255,0.1)",
-              boxShadow: "inset 0 1px 2px rgba(0,0,0,0.5)",
-            }}
-          />
-        ))}
+    <svg width={size} height={size} viewBox="0 0 16 16" fill="none">
+      <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  )
+}
+
+export default function Hero() {
+  const heroRef = useRef<HTMLElement>(null)
+  const h1Ref = useRef<HTMLHeadingElement>(null)
+
+  // Cursor spotlight
+  useEffect(() => {
+    const el = heroRef.current; if (!el) return
+    let raf = 0, tx = 50, ty = 35, cx = 50, cy = 35
+    const onMove = (e: MouseEvent) => {
+      const r = el.getBoundingClientRect()
+      tx = ((e.clientX - r.left) / r.width) * 100
+      ty = ((e.clientY - r.top) / r.height) * 100
+      el.classList.add("spot-on")
+    }
+    const onLeave = () => el.classList.remove("spot-on")
+    const tick = () => {
+      cx += (tx - cx) * 0.12; cy += (ty - cy) * 0.12
+      el.style.setProperty("--mx", cx.toFixed(2) + "%")
+      el.style.setProperty("--my", cy.toFixed(2) + "%")
+      raf = requestAnimationFrame(tick)
+    }
+    el.addEventListener("mousemove", onMove)
+    el.addEventListener("mouseleave", onLeave)
+    raf = requestAnimationFrame(tick)
+    return () => {
+      el.removeEventListener("mousemove", onMove)
+      el.removeEventListener("mouseleave", onLeave)
+      cancelAnimationFrame(raf)
+    }
+  }, [])
+
+  // Scroll merge effect
+  useEffect(() => {
+    // hf-1: " op de " — fade then collapse (brings Stroom+plek together on line 1)
+    // hf-2: "waar jij het nodig hebt." — fade + slide up (separate block line, no width collapse needed)
+    const hf1 = document.querySelector<HTMLElement>(".hf-1")
+    const hf2 = document.querySelector<HTMLElement>(".hf-2")
+    if (!hf1 || !hf2) return
+    let w1 = 0
+    let raf = 0
+
+    const measure = () => {
+      hf1.style.width = ""; hf1.style.opacity = ""; hf1.style.letterSpacing = ""
+      hf2.style.opacity = ""; hf2.style.transform = ""; hf2.style.maxHeight = ""
+      w1 = hf1.getBoundingClientRect().width
+      apply()
+    }
+    const apply = () => {
+      const vh = window.innerHeight || 800
+      const p = Math.max(0, Math.min(1, window.scrollY / (vh * 0.55)))
+      const e = 1 - Math.pow(1 - p, 1.6)
+
+      const eFade     = Math.min(1, e / 0.40)   // opacity goes to 0 first
+      const eCollapse = Math.max(0, (e - 0.40) / 0.60) // then width collapses
+
+      // Line 1 fill: fade then collapse
+      hf1.style.opacity       = (1 - eFade).toFixed(3)
+      hf1.style.width         = eCollapse > 0 ? (w1 * (1 - eCollapse)).toFixed(2) + "px" : ""
+      hf1.style.letterSpacing = eFade < 1 ? (-0.04 * eFade) + "em" : ""
+
+      // Line 2 (whole block): fade + slight upward lift — no width collapse
+      hf2.style.opacity   = (1 - Math.min(1, e / 0.52)).toFixed(3)
+      hf2.style.transform = `translateY(${-(eCollapse * 14).toFixed(1)}px)`
+      hf2.style.maxHeight = eCollapse > 0.8 ? "0" : ""
+
+      const stroom = document.querySelector<HTMLElement>(".hw-stroom")
+      const plek   = document.querySelector<HTMLElement>(".hw-plek")
+      if (stroom && plek) {
+        const glow  = (e * 28).toFixed(1)
+        const scale = (1 + e * 0.04).toFixed(3)
+        stroom.style.transform = `scale(${scale})`
+        plek.style.transform   = `scale(${scale})`
+        stroom.style.filter = `drop-shadow(0 0 ${glow}px rgba(212,128,74,${0.25 + e * 0.45}))`
+        plek.style.filter   = `drop-shadow(0 0 ${glow}px rgba(212,128,74,${0.25 + e * 0.45}))`
+      }
+    }
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; apply() }) }
+    apply()
+    setTimeout(measure, 50)
+    setTimeout(measure, 400)
+    window.addEventListener("scroll", onScroll, { passive: true })
+    window.addEventListener("resize", measure)
+    return () => { window.removeEventListener("scroll", onScroll); window.removeEventListener("resize", measure) }
+  }, [])
+
+  const badges = ["Gemaakt in NL", "Vast & Mobiel", "UTP · USB · Schuko", "B2B & Particulier", "Maatwerk", "Op bestelling gebouwd"]
+
+  return (
+    <section ref={heroRef} className="hero">
+      <div className="hero-bg">
+        <div className="floor" />
+        <div className="grid" />
+        <div className="beam" />
+        <div className="glow" />
+        <div className="glow-2" />
       </div>
-      {/* Base */}
-      <div
-        className="mx-auto"
-        style={{
-          width: "96px",
-          height: "12px",
-          background: "linear-gradient(180deg, #2a2a3a, #1a1a28)",
-          borderRadius: "3px",
-          marginTop: "2px",
-        }}
-      />
-    </div>
+      <HeroColumns />
+      <div className="container hero-content">
+        <Reveal>
+          <span className="kicker">
+            <span className="live" />
+            {" "}Lancering · 11 mei 2026
+          </span>
+        </Reveal>
+
+        <div className="hero-headline">
+          <Reveal>
+            <div className="hero-phrase" ref={h1Ref}>
+              {/* Line 1 — merge animation: "Stroom op de plek" → "Stroomplek" */}
+              <h1 className="three-d hero-merge">
+                <span className="copper-word hw-stroom">Stroom</span>
+                <span className="hero-fill hf-1"> op de </span>
+                <span className="copper-word hw-plek">plek</span>
+              </h1>
+              {/* Line 2 — fades + lifts away on scroll */}
+              <p className="hero-subline hf-2">
+                waar jij het nodig hebt.
+              </p>
+            </div>
+          </Reveal>
+          <Reveal delay={120}>
+            <div className="meta-col">
+              <p className="lede">Premium stroomzuilen voor evenementen, scholen en kantoren. Vast of mobiel — strak, stil en volledig configureerbaar.</p>
+              <div className="hero-actions">
+                <Magnetic strength={0.18}>
+                  <Link href="/contact" className="btn btn-copper btn-arrow">
+                    Offerte aanvragen <Arrow />
+                  </Link>
+                </Magnetic>
+                <Magnetic strength={0.18}>
+                  <Link href="/vast" className="btn btn-outline-light">
+                    Bekijk producten
+                  </Link>
+                </Magnetic>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+
+        <Reveal delay={260}>
+          <div className="hero-badges marquee" style={{ marginTop: "clamp(40px, 5vw, 64px)" }}>
+            <div className="marquee-track">
+              {[...Array(2)].map((_, k) =>
+                badges.map((b, i) => <span key={`${k}-${i}`} className="b">{b}</span>)
+              )}
+            </div>
+          </div>
+        </Reveal>
+      </div>
+    </section>
   )
 }

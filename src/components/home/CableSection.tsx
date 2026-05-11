@@ -6,16 +6,16 @@ import { useEffect, useRef, useState } from "react"
 // Each path is drawn from outside inward toward the pillar base (center-bottom of SVG)
 const CABLES = [
   // From far left, sweeping across
-  { d: "M -40 88 C 60 90, 110 86, 160 84 S 240 82, 300 84", delay: 0,    len: 360 },
-  { d: "M -20 92 C 80 94, 140 90, 210 92 S 290 94, 340 90", delay: 80,   len: 380 },
-  { d: "M 20 96 C 90 98, 150 94, 220 94",                    delay: 40,   len: 220 },
+  { d: "M -40 8 C 60 10, 110 6, 160 4 S 240 2, 300 4", delay: 0,    len: 360 },
+  { d: "M -20 12 C 80 14, 140 10, 210 12 S 290 14, 340 10", delay: 80,   len: 380 },
+  { d: "M 20 16 C 90 18, 150 14, 220 14",                    delay: 40,   len: 220 },
   // From far right
-  { d: "M 660 86 C 560 88, 500 86, 440 84 S 380 84, 340 86", delay: 20,  len: 330 },
-  { d: "M 640 92 C 540 94, 470 92, 410 92 S 370 92, 345 90", delay: 100, len: 310 },
-  { d: "M 600 96 C 520 98, 460 96, 390 96",                  delay: 60,  len: 220 },
+  { d: "M 660 6 C 560 8, 500 6, 440 4 S 380 4, 340 6", delay: 20,  len: 330 },
+  { d: "M 640 12 C 540 14, 470 12, 410 12 S 370 12, 345 10", delay: 100, len: 310 },
+  { d: "M 600 16 C 520 18, 460 16, 390 16",                  delay: 60,  len: 220 },
   // Shorter cross-cables
-  { d: "M 80 100 C 140 98, 200 98, 260 96 S 310 95, 335 94", delay: 120, len: 270 },
-  { d: "M 560 100 C 500 98, 450 98, 400 96 S 360 95, 345 94",delay: 140, len: 230 },
+  { d: "M 80 20 C 140 18, 200 18, 260 16 S 310 15, 335 14", delay: 120, len: 270 },
+  { d: "M 560 20 C 500 18, 450 18, 400 16 S 360 15, 345 14",delay: 140, len: 230 },
 ]
 
 export default function CableSection() {
@@ -26,7 +26,7 @@ export default function CableSection() {
     const el = ref.current; if (!el) return
     const io = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) { setTriggered(true); io.disconnect() } },
-      { threshold: 0.45 }
+      { threshold: 0.3 }
     )
     io.observe(el)
     return () => io.disconnect()
@@ -68,7 +68,7 @@ export default function CableSection() {
           {/* SVG cables */}
           <svg
             className="cable-svg"
-            viewBox="0 80 680 110"
+            viewBox="0 0 680 120"
             preserveAspectRatio="xMidYMax meet"
           >
             <defs>
@@ -127,8 +127,8 @@ function CablePath({
     <path
       d={d}
       fill="none"
-      stroke="rgba(140,148,160,0.55)"
-      strokeWidth="2.5"
+      stroke="rgba(160,168,180,0.7)"
+      strokeWidth="3.5"
       strokeLinecap="round"
       filter="url(#cable-glow)"
       style={{

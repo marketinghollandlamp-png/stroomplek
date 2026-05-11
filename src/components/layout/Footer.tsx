@@ -40,6 +40,7 @@ export default function Footer() {
               <li><Link href="/vast">Vaste zuilen</Link></li>
               <li><Link href="/mobiel">Mobiele zuilen</Link></li>
               <li><Link href="/config">Configurator</Link></li>
+              <li><Link href="/projecten">Projecten</Link></li>
             </ul>
           </div>
           <div>

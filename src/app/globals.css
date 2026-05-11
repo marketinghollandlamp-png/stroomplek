@@ -50,7 +50,7 @@
 /* ====== Reset ====== */
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-html, body { margin: 0; padding: 0; }
+html, body { margin: 0; padding: 0; overflow-x: hidden; }
 
 body {
   font-family: var(--font-body);
@@ -1880,15 +1880,15 @@ body.story-flip::before {
 .pf-row { display: flex; gap: 12px; flex-wrap: wrap; }
 
 /* ====== Cable section ====== */
-.cable-section { position: relative; overflow: hidden; padding: clamp(80px, 10vw, 130px) 0; }
-.cable-bg { position: absolute; inset: 0; pointer-events: none; }
+.cable-section { position: relative; padding: clamp(80px, 10vw, 130px) 0; }
+.cable-bg { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
 .cb-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(245,245,245,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(245,245,245,.03) 1px, transparent 1px); background-size: 72px 72px; }
 .cb-glow { position: absolute; left: 50%; top: 50%; width: 60vw; height: 60vw; transform: translate(-50%,-50%); background: radial-gradient(closest-side, rgba(212,128,74,.07), transparent 65%); filter: blur(40px); }
 .cable-inner { display: grid; grid-template-columns: 1fr 1.2fr; gap: clamp(48px, 6vw, 80px); align-items: center; position: relative; z-index: 1; }
 @media (max-width: 860px) { .cable-inner { grid-template-columns: 1fr; } }
-.cable-scene { position: relative; height: clamp(220px, 30vw, 360px); }
-.cable-floor { position: absolute; left: -15%; right: -15%; bottom: 0; height: 55%; background-image: linear-gradient(rgba(212,128,74,.12) 1px, transparent 1px), linear-gradient(90deg, rgba(212,128,74,.06) 1px, transparent 1px); background-size: 80px 50px; transform: perspective(700px) rotateX(70deg); transform-origin: center top; mask-image: linear-gradient(to top, black 0%, black 25%, transparent 80%); -webkit-mask-image: linear-gradient(to top, black 0%, black 25%, transparent 80%); opacity: .8; }
-.cable-svg { position: absolute; bottom: 8%; left: 0; right: 0; width: 100%; height: auto; overflow: visible; }
+.cable-scene { position: relative; height: clamp(260px, 34vw, 420px); overflow: hidden; }
+.cable-floor { position: absolute; left: 0; right: 0; bottom: 0; height: 55%; background-image: linear-gradient(rgba(212,128,74,.12) 1px, transparent 1px), linear-gradient(90deg, rgba(212,128,74,.06) 1px, transparent 1px); background-size: 80px 50px; transform: perspective(700px) rotateX(70deg); transform-origin: center top; mask-image: linear-gradient(to top, black 0%, black 25%, transparent 80%); -webkit-mask-image: linear-gradient(to top, black 0%, black 25%, transparent 80%); opacity: .8; }
+.cable-svg { position: absolute; bottom: 0; left: 0; right: 0; width: 100%; height: 40%; overflow: visible; }
 .cable-pillar { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%) translateY(100%); display: flex; flex-direction: column; align-items: center; transition: transform 1s cubic-bezier(.2,.85,.3,1) 0.7s; }
 .cable-pillar.risen { transform: translateX(-50%) translateY(0); }
 .cp-body { position: relative; width: clamp(42px, 6vw, 68px); height: clamp(130px, 18vw, 220px); background: linear-gradient(180deg, #1D3550 0%, #14263C 100%); border-radius: 6px 6px 0 0; box-shadow: 0 0 0 1px rgba(212,128,74,.2), 0 -8px 32px rgba(0,0,0,.4), inset 2px 0 6px rgba(255,255,255,.04); }
@@ -1936,3 +1936,91 @@ body.story-flip::before {
 .proj-coming { max-width: 560px; text-align: center; margin: 0 auto; padding: clamp(32px, 4vw, 48px); border: 1px solid var(--paper-edge); border-radius: var(--radius-xl); background: var(--paper-2); }
 .proj-coming p { color: var(--ink-mute); font-size: 15px; line-height: 1.7; margin: 12px 0 0; }
 .pc-line { width: 40px; height: 2px; background: var(--copper); border-radius: 1px; margin: 0 auto 16px; }
+
+/* ====== Mobile responsiveness ====== */
+
+/* Hero text wrapping on small screens */
+@media (max-width: 540px) {
+  .hero-merge { white-space: normal; flex-wrap: wrap; }
+  .hero-subline { white-space: normal; font-size: clamp(22px, 6vw, 34px); }
+  .hero h1.three-d { font-size: clamp(38px, 10vw, 56px); }
+  .hero-content { padding-top: 100px; padding-bottom: 48px; gap: 0; }
+  .hero-headline { gap: 20px; }
+}
+
+/* Mobile meta-col buttons */
+@media (max-width: 480px) {
+  .hero-actions { flex-direction: column; align-items: flex-start; }
+  .btn { width: 100%; justify-content: center; }
+}
+
+/* Navigation bar height on mobile */
+@media (max-width: 540px) {
+  .topbar-inner { height: 60px; }
+}
+
+/* Section padding on mobile */
+@media (max-width: 540px) {
+  .section { padding: clamp(56px, 12vw, 80px) 0; }
+  .section-tight { padding: clamp(40px, 8vw, 56px) 0; }
+}
+
+/* Timeline on mobile */
+@media (max-width: 600px) {
+  .tl-spine { left: 24px; }
+  .tl-step { grid-template-columns: 50px 1fr; gap: 12px; }
+  .tl-dot { width: 50px; height: 50px; }
+  .tl-num { font-size: 10px; }
+  .tl-card { padding: 16px 18px; }
+  .tl-card h4 { font-size: 17px; }
+}
+
+/* Page head on mobile */
+@media (max-width: 760px) {
+  .page-head { padding-top: 100px; }
+  .page-head h1 { font-size: clamp(36px, 9vw, 56px); }
+}
+
+/* Products grid on mobile */
+@media (max-width: 540px) {
+  .cards-grid.four, .cards-grid.two { grid-template-columns: 1fr; }
+  .mc-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Why-grid on mobile */
+@media (max-width: 540px) {
+  .why-grid { grid-template-columns: 1fr; }
+  .why-item { min-height: auto; padding: 24px 20px; }
+}
+
+/* Cable section on mobile */
+@media (max-width: 540px) {
+  .cable-scene { height: 200px; }
+  .cp-body { width: 36px; height: 110px; }
+}
+
+/* Story/chapter on mobile */
+@media (max-width: 480px) {
+  .chapter { grid-template-columns: 1fr; gap: 12px; }
+  .ch-num { flex-direction: row; align-items: center; gap: 12px; position: static; }
+  .ch-line { width: 40px; min-height: 1px; height: 1px; background: linear-gradient(90deg, var(--copper), transparent); flex: 0; }
+}
+
+/* Touch targets */
+@media (max-width: 860px) {
+  .nav-cta { padding: 12px 20px; min-height: 44px; }
+  .btn { min-height: 48px; padding: 14px 22px; }
+  .faq-q { min-height: 56px; }
+  .pf-btn { min-height: 40px; }
+}
+
+/* References section on mobile */
+@media (max-width: 540px) {
+  .ref-card { flex: 0 0 85vw; }
+}
+
+/* RAL picker on mobile */
+@media (max-width: 540px) {
+  .ral-preview { height: 300px; }
+  .ral-pv-zuil { width: 60px; height: 180px; bottom: 50px; }
+}

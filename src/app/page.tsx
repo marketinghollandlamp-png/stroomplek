@@ -6,6 +6,7 @@ import ModelCompare from "@/components/home/ModelCompare"
 import ProcessTimeline from "@/components/home/ProcessTimeline"
 import RALPicker from "@/components/shared/RALPicker"
 import ReferencesSection from "@/components/home/ReferencesSection"
+import CableSection from "@/components/home/CableSection"
 import CTABanner from "@/components/shared/CTABanner"
 import { ScrollProgress, CursorTrail, LoadingSplash, KonamiConfetti, StickyConfig, SpecMagnify, ClickSounds } from "@/components/ui/ClientEffects"
 
@@ -19,6 +20,7 @@ export default function HomePage() {
       <SpecMagnify />
       <ClickSounds enabled={false} />
       <Hero />
+      <CableSection />
       <ProblemSection />
       <div className="copper-rule" />
       <ProductsSection />

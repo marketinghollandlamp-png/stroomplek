@@ -4,6 +4,7 @@ import "./globals.css"
 import Navigation from "@/components/layout/Navigation"
 import Footer from "@/components/layout/Footer"
 import { PageTransitionWrapper } from "@/components/ui/PageTransitionWrapper"
+import LenisProvider from "@/components/providers/LenisProvider"
 
 const inter = Inter({
   variable: "--font-inter",
@@ -46,9 +47,11 @@ export default function RootLayout({
       }}
     >
       <body style={{ fontFamily: "var(--font-body)" }}>
-        <Navigation />
-        <main><PageTransitionWrapper>{children}</PageTransitionWrapper></main>
-        <Footer />
+        <LenisProvider>
+          <Navigation />
+          <main><PageTransitionWrapper>{children}</PageTransitionWrapper></main>
+          <Footer />
+        </LenisProvider>
       </body>
     </html>
   )

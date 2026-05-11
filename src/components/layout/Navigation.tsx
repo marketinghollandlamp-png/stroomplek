@@ -8,8 +8,9 @@ const PAGES = [
   { href: "/vast",   label: "Vaste zuilen" },
   { href: "/mobiel", label: "Mobiele zuilen" },
   { href: "/config", label: "Configurator" },
-  { href: "/over",   label: "Over ons" },
-  { href: "/blog",   label: "Blog" },
+  { href: "/projecten", label: "Projecten" },
+  { href: "/over",      label: "Over ons" },
+  { href: "/blog",      label: "Blog" },
   { href: "/faq",    label: "FAQ" },
 ]
 

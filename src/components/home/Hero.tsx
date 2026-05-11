@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { Reveal } from "@/components/ui/Reveal"
 import { Magnetic } from "@/components/ui/Magnetic"
+import HeroParticles from "@/components/hero/HeroParticles"
 
 function HeroColumns() {
   const ref = useRef<HTMLDivElement>(null)
@@ -139,12 +140,13 @@ export default function Hero() {
         <div className="glow" />
         <div className="glow-2" />
       </div>
+      <HeroParticles />
       <HeroColumns />
       <div className="container hero-content">
         <Reveal>
           <span className="kicker">
             <span className="live" />
-            {" "}Lancering · 11 mei 2026
+            {" "}Nu bestelbaar · Heerhugowaard
           </span>
         </Reveal>
 
